@@ -157,7 +157,7 @@ public class Weapon : MonoBehaviour {
                 p.rigid.velocity = vel;
 
                 GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-                GameObject closestEnemy;
+                GameObject closestEnemy = null;
                 Vector3 heroPos = Hero.S.transform.position;
                 Vector3 closestEnemyPos = Vector3.positiveInfinity;
 
@@ -171,6 +171,8 @@ public class Weapon : MonoBehaviour {
                         closestEnemyPos = e.transform.position; // We use to find initial target
                     }
                 }
+
+                p.enemy = closestEnemy;
             break;
 
             case WeaponType.laser:

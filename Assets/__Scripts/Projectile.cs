@@ -36,7 +36,8 @@ public class Projectile : MonoBehaviour {
         }
     }
     
-    public float vel;
+    public Vector3 vel;
+    public GameObject enemy;
     private void Update() {
         if (bndCheck.offUp) { Destroy(gameObject); }
 
@@ -53,7 +54,16 @@ public class Projectile : MonoBehaviour {
             this.rigid.position = tempPos;
 
             // Debug.Log(this.rigid.velocity);
+        } else if (this._type == WeaponType.missile) {
+            if (enemy == null) {
+                // Debug.Log("HM - Return");
+                return;
+            }
+            float direction = Vector3.Angle(this.transform.position, enemy.transform.position);
+            this.transform.rotation = Quaternion.AngleAxis(direction, Vector3.back);
+            this.rigid.velocity = this.transform.rotation * this.rigid.velocity;
         }
+        Debug.Log(this.rigid.velocity);
     }
 
     ///<summary>
