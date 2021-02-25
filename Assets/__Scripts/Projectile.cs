@@ -13,17 +13,11 @@ public class Projectile : MonoBehaviour {
     private WeaponType _type;
 
     // This public property masks the field _type and takes action when it is set
-    public WeaponType type
-    {
-        get
-        {
-            return (_type);
-        }
-        set
-        {
-            SetType(value);
-        }
+    public WeaponType type {
+        get { return (_type); }
+        set { SetType(value); }
     }
+
     private void Awake()
     {
         bndCheck = GetComponent<BoundsCheck>();
@@ -31,11 +25,19 @@ public class Projectile : MonoBehaviour {
         rigid = GetComponent<Rigidbody>();
     }
 
-    private void Update()
-    {
-        if (bndCheck.offUp)
-        {
-            Destroy(gameObject);
+    private void Start() {
+        if (this._type == WeaponType.phaser) {
+            Debug.Log("THIS IS PHASER START");
+
+        }
+    }
+
+    private void Update() {
+        if (bndCheck.offUp) { Destroy(gameObject); }
+
+        if (this._type == WeaponType.phaser) {
+            Debug.Log("THIS IS PHASER UPDATE");
+            
         }
     }
 

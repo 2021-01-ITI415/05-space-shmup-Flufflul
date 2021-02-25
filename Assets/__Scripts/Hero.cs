@@ -70,7 +70,8 @@ public class Hero : MonoBehaviour {
             fireDelegate();
         }
         */
-        if (Keyboard.current.spaceKey.isPressed && fireDelegate != null) { fireDelegate(); }
+        if (Keyboard.current.spaceKey.isPressed && fireDelegate != null) 
+            { fireDelegate(); }
     }
     
     Vector3 movementVector3;

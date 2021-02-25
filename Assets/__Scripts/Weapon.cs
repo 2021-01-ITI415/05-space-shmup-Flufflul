@@ -95,7 +95,7 @@ public class Weapon : MonoBehaviour {
 
     public void Fire()
     {
-        Debug.Log("Weapon Fired:" + gameObject.name);
+        // Debug.Log("Weapon Fired:" + gameObject.name);
         // If this.gameObject is inactive, return
         if (!gameObject.activeInHierarchy) return;
         // If it hasn't been enough time between shots, return
@@ -139,18 +139,19 @@ public class Weapon : MonoBehaviour {
             break;
             
             case WeaponType.phaser:
-                // float waveFrequency = 1;
-                // float waveWidth = 1;
-                // float waveYRotation = 1;
+                p = MakeProjectile();
 
-                // Vector3 tempPos = pos;
+                float waveFrequency = 2;
+                float waveWidth = 4;
+                float waveShake = Time.time;
 
-                // float age = Time.time - birthTime;
-                // float theta = Mathf.PI * 2 * age / waveFrequency;
-                // float sin = Mathf.Sin(theta);
-                // tempPos.x = x0 + waveWidth * sin;
-                // pos = tempPos;
+                float theta = 2 * Mathf.PI * waveShake / waveFrequency;
+                float wave = Mathf.Sin(theta);
 
+                Vector3 waveVel = vel;
+                waveVel.x = vel.x + waveWidth * wave;
+
+                p.rigid.velocity = waveVel;
             break;
             
             case WeaponType.missile:
