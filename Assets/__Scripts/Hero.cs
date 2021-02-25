@@ -77,7 +77,8 @@ public class Hero : MonoBehaviour {
     Vector3 movementVector3;
     private void FixedUpdate() {
         movementVector3 = new Vector3(movementX, movementY, 0.0f);
-        rb.AddForce(movementVector3 * speed * Time.deltaTime);
+        // rb.AddForce(movementVector3 * speed);
+        rb.velocity = speed * movementVector3;
         // Debug.Log("Force: "+movementVector3*speed);
     }
 
