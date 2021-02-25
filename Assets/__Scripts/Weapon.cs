@@ -72,14 +72,8 @@ public class Weapon : MonoBehaviour {
 
     public WeaponType type
     {
-        get
-        {
-            return (_type);
-        }
-        set
-        {
-            SetType(value);
-        }
+        get { return (_type); }
+        set { SetType(value); }
     }
 
     public void SetType(WeaponType wt)
@@ -125,12 +119,23 @@ public class Weapon : MonoBehaviour {
             case WeaponType.spread:
                 p = MakeProjectile(); // Make middle Projectile
                 p.rigid.velocity = vel;
+                
                 p = MakeProjectile(); // Make right Projectile
                 p.transform.rotation = Quaternion.AngleAxis(10, Vector3.back);
                 p.rigid.velocity = p.transform.rotation * vel;
+                
                 p = MakeProjectile(); // Make left Projectile
                 p.transform.rotation = Quaternion.AngleAxis(-10, Vector3.back);
                 p.rigid.velocity = p.transform.rotation * vel;
+
+                p = MakeProjectile(); // Make l-m Projectile
+                p.transform.rotation = Quaternion.AngleAxis(-5, Vector3.back);
+                p.rigid.velocity = p.transform.rotation * vel;
+                
+                p = MakeProjectile(); // Make m-r Projectile
+                p.transform.rotation = Quaternion.AngleAxis(5, Vector3.back);
+                p.rigid.velocity = p.transform.rotation * vel;
+
                 break;
         }
     }
