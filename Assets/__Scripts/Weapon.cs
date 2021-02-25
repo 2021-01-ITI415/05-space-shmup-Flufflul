@@ -93,20 +93,24 @@ public class Weapon : MonoBehaviour {
         lastShotTime = 0; // You can fire immediately after _type is set.
     }
 
+    [Header("Inspector: Phaser wave")]
+    public static float waveFreq = 2;
+    public static float waveWidth = 4;
+
     public void Fire()
     {
         // Debug.Log("Weapon Fired:" + gameObject.name);
         // If this.gameObject is inactive, return
         if (!gameObject.activeInHierarchy) return;
         // If it hasn't been enough time between shots, return
-        if (Time.time - lastShotTime < def.delayBetweenShots)
-        {
+        if (Time.time - lastShotTime < def.delayBetweenShots) {
             return;
         }
+
         Projectile p;
         Vector3 vel = Vector3.up * def.velocity;
-        if (transform.up.y < 0)
-        {
+
+        if (transform.up.y < 0) {
             vel.y = -vel.y;
         }
         switch (type)
@@ -139,22 +143,16 @@ public class Weapon : MonoBehaviour {
             break;
             
             case WeaponType.phaser:
+                // Debug.Log("W-T.PHASER");
+
                 p = MakeProjectile();
-
-                float waveFrequency = 2;
-                float waveWidth = 4;
-                float waveShake = Time.time;
-
-                float theta = 2 * Mathf.PI * waveShake / waveFrequency;
-                float wave = Mathf.Sin(theta);
-
-                Vector3 waveVel = vel;
-                waveVel.x = vel.x + waveWidth * wave;
-
-                p.rigid.velocity = waveVel;
+                p.rigid.velocity = vel;
             break;
             
             case WeaponType.missile:
+                // Debug.Log("W-T.MISSILE);
+
+                
             break;
 
             case WeaponType.laser:
