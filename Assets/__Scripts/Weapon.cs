@@ -15,7 +15,8 @@ public enum WeaponType
     phaser, // [NI] Shots that move in waves
     missile, // [NI] Homing missiles
     laser, // [NI] Damage over time
-    shield // Raise shieldLevel
+    shield, // Raise shieldLevel
+    swivel // [NI] Homing blaster
 }
 
 /// <summary>
@@ -152,10 +153,30 @@ public class Weapon : MonoBehaviour {
             case WeaponType.missile:
                 // Debug.Log("W-T.MISSILE);
 
-                
+                p = MakeProjectile();
+                p.rigid.velocity = vel;
+
+                GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+                GameObject closestEnemy;
+                Vector3 heroPos = Hero.S.transform.position;
+                Vector3 closestEnemyPos = Vector3.positiveInfinity;
+
+                // Find closest enemy
+                foreach (GameObject e in enemies) {
+                    float closestEnemyDist = Vector3.Distance(heroPos, closestEnemyPos);
+                    float enemyDist = Vector3.Distance(heroPos, e.transform.position);
+
+                    if (enemyDist <  closestEnemyDist) {
+                        closestEnemy = e; // We will use this info to home
+                        closestEnemyPos = e.transform.position; // We use to find initial target
+                    }
+                }
             break;
 
             case WeaponType.laser:
+            break;
+
+            case WeaponType.swivel:
             break;
         }
     }
