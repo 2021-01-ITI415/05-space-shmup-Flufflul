@@ -72,7 +72,6 @@ public class Hero : MonoBehaviour {
         */
         if (Keyboard.current.spaceKey.isPressed && fireDelegate != null) { fireDelegate(); }
     }
-
     
     Vector3 movementVector3;
     private void FixedUpdate() {
@@ -80,6 +79,10 @@ public class Hero : MonoBehaviour {
         // rb.AddForce(movementVector3 * speed);
         rb.velocity = speed * movementVector3;
         // Debug.Log("Force: "+movementVector3*speed);
+        
+        float rotationX = movementY * pitchMult;
+        float rotationY = movementX * rollMult;
+        transform.rotation = Quaternion.Euler(rotationX, rotationY, 0);
     }
 
     private void OnMove(InputValue movementValue) {

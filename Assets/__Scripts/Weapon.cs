@@ -114,7 +114,8 @@ public class Weapon : MonoBehaviour {
             case WeaponType.blaster:
                 p = MakeProjectile();
                 p.rigid.velocity = vel;
-                break;
+
+            break;
 
             case WeaponType.spread:
                 p = MakeProjectile(); // Make middle Projectile
@@ -127,7 +128,7 @@ public class Weapon : MonoBehaviour {
                 p = MakeProjectile(); // Make left Projectile
                 p.transform.rotation = Quaternion.AngleAxis(-10, Vector3.back);
                 p.rigid.velocity = p.transform.rotation * vel;
-
+                
                 p = MakeProjectile(); // Make l-m Projectile
                 p.transform.rotation = Quaternion.AngleAxis(-5, Vector3.back);
                 p.rigid.velocity = p.transform.rotation * vel;
@@ -135,8 +136,28 @@ public class Weapon : MonoBehaviour {
                 p = MakeProjectile(); // Make m-r Projectile
                 p.transform.rotation = Quaternion.AngleAxis(5, Vector3.back);
                 p.rigid.velocity = p.transform.rotation * vel;
+            break;
+            
+            case WeaponType.phaser:
+                // float waveFrequency = 1;
+                // float waveWidth = 1;
+                // float waveYRotation = 1;
 
-                break;
+                // Vector3 tempPos = pos;
+
+                // float age = Time.time - birthTime;
+                // float theta = Mathf.PI * 2 * age / waveFrequency;
+                // float sin = Mathf.Sin(theta);
+                // tempPos.x = x0 + waveWidth * sin;
+                // pos = tempPos;
+
+            break;
+            
+            case WeaponType.missile:
+            break;
+
+            case WeaponType.laser:
+            break;
         }
     }
 
