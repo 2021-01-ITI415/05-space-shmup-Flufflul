@@ -44,7 +44,7 @@ public class Projectile : MonoBehaviour {
         if (this._type == WeaponType.phaser) {
             // Debug.Log("THIS IS PHASER UPDATE");
             
-            Vector3 tempPos = heroPos;
+            Vector3 tempPos = this.transform.position;
 
             float age = Time.time - initInit;
             float theta = Mathf.PI * 2 * age / Weapon.waveFreq;
@@ -63,7 +63,7 @@ public class Projectile : MonoBehaviour {
             this.transform.rotation = Quaternion.AngleAxis(direction, Vector3.back);
             this.rigid.velocity = this.transform.rotation * this.rigid.velocity;
         }
-        Debug.Log(this.rigid.velocity);
+        // Debug.Log(this.rigid.velocity);
     }
 
     ///<summary>
