@@ -15,7 +15,8 @@ public enum WeaponType
     phaser, // [NI] Shots that move in waves
     missile, // [NI] Homing missiles
     laser, // [NI] Damage over time
-    shield // Raise shieldLevel
+    shield, // Raise shieldLevel
+    swivel // [NI] Homing blaster
 }
 
 /// <summary>
@@ -72,14 +73,8 @@ public class Weapon : MonoBehaviour {
 
     public WeaponType type
     {
-        get
-        {
-            return (_type);
-        }
-        set
-        {
-            SetType(value);
-        }
+        get { return (_type); }
+        set { SetType(value); }
     }
 
     public void SetType(WeaponType wt)
@@ -99,20 +94,24 @@ public class Weapon : MonoBehaviour {
         lastShotTime = 0; // You can fire immediately after _type is set.
     }
 
+    [Header("Inspector: Phaser wave")]
+    public static float waveFreq = 2;
+    public static float waveWidth = 4;
+
     public void Fire()
     {
-        Debug.Log("Weapon Fired:" + gameObject.name);
+        // Debug.Log("Weapon Fired:" + gameObject.name);
         // If this.gameObject is inactive, return
         if (!gameObject.activeInHierarchy) return;
         // If it hasn't been enough time between shots, return
-        if (Time.time - lastShotTime < def.delayBetweenShots)
-        {
+        if (Time.time - lastShotTime < def.delayBetweenShots) {
             return;
         }
+
         Projectile p;
         Vector3 vel = Vector3.up * def.velocity;
-        if (transform.up.y < 0)
-        {
+
+        if (transform.up.y < 0) {
             vel.y = -vel.y;
         }
         switch (type)
@@ -120,18 +119,67 @@ public class Weapon : MonoBehaviour {
             case WeaponType.blaster:
                 p = MakeProjectile();
                 p.rigid.velocity = vel;
-                break;
+
+            break;
 
             case WeaponType.spread:
                 p = MakeProjectile(); // Make middle Projectile
                 p.rigid.velocity = vel;
+                
                 p = MakeProjectile(); // Make right Projectile
                 p.transform.rotation = Quaternion.AngleAxis(10, Vector3.back);
                 p.rigid.velocity = p.transform.rotation * vel;
+                
                 p = MakeProjectile(); // Make left Projectile
                 p.transform.rotation = Quaternion.AngleAxis(-10, Vector3.back);
                 p.rigid.velocity = p.transform.rotation * vel;
-                break;
+                
+                p = MakeProjectile(); // Make l-m Projectile
+                p.transform.rotation = Quaternion.AngleAxis(-5, Vector3.back);
+                p.rigid.velocity = p.transform.rotation * vel;
+                
+                p = MakeProjectile(); // Make m-r Projectile
+                p.transform.rotation = Quaternion.AngleAxis(5, Vector3.back);
+                p.rigid.velocity = p.transform.rotation * vel;
+            break;
+            
+            case WeaponType.phaser:
+                // Debug.Log("W-T.PHASER");
+
+                p = MakeProjectile();
+                p.rigid.velocity = vel;
+            break;
+            
+            case WeaponType.missile:
+                // Debug.Log("W-T.MISSILE);
+
+                p = MakeProjectile();
+                p.rigid.velocity = vel;
+
+                GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+                GameObject closestEnemy = null;
+                Vector3 heroPos = Hero.S.transform.position;
+                Vector3 closestEnemyPos = Vector3.positiveInfinity;
+
+                // Find closest enemy
+                foreach (GameObject e in enemies) {
+                    float closestEnemyDist = Vector3.Distance(heroPos, closestEnemyPos);
+                    float enemyDist = Vector3.Distance(heroPos, e.transform.position);
+
+                    if (enemyDist <  closestEnemyDist) {
+                        closestEnemy = e; // We will use this info to home
+                        closestEnemyPos = e.transform.position; // We use to find initial target
+                    }
+                }
+
+                p.enemy = closestEnemy;
+            break;
+
+            case WeaponType.laser:
+            break;
+
+            case WeaponType.swivel:
+            break;
         }
     }
 
